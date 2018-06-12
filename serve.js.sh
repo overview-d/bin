@@ -1,4 +1,17 @@
 #!/bin/sh
 set -eu
 
-exec "${0%/*}/node_modules/.bin/http-server"
+Z="${0%/*}/node_modules/.bin/http-server"
+
+installed() {
+	test -e "$Z"
+}
+
+install() (
+	cd "${0%/*}"
+	npm install
+)
+
+installed || install
+
+exec "$Z" "$@"
